@@ -11,15 +11,11 @@ let app    = express()
 let server = require('http').createServer(app)
 
 
-
-
-
-
 app.use('/', express.static(path.join(__dirname, 'public')))
 
-app.get('/getListOfMeasurements', (req, res, next) => {
-    fs.readdir('measurements', (err, files) => {
-        res.send(JSON.stringify(files))
+app.get('/list', (req, res, next) => {
+    fs.readdir('data', (err, files) => {
+        res.send(JSON.stringify(['aaa', 'bbb', 'ccc']))
     })
 })
 

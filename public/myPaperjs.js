@@ -1,8 +1,3 @@
-let FIELD_TYPES = {
-    NEXPERIA : "nexperia",
-    FULL_96 : "full96"
-}
-
 function setupPaperJs(fieldType = "nexperia"){
     let canvas = document.getElementById('myCanvas');
     paper.setup(canvas);
@@ -16,12 +11,11 @@ function setupPaperJs(fieldType = "nexperia"){
 
     // Draw correct field
     let field;
-    if(fieldType == FIELD_TYPES.NEXPERIA)
-        field = drawDemoFieldNexperia(paper)
-    else if(fieldType == FIELD_TYPES.FULL_96)
-        field = drawFullField_9_6(paper)
-    else
-        field = drawDemoFieldNexperia(paper)
+         if(fieldType == FIELD_TYPES.NEXPERIA)   field = drawDemoNexperia(paper)
+    else if(fieldType == FIELD_TYPES.DEMO23)     field = drawDemo23(paper)
+    else if(fieldType == FIELD_TYPES.FULL96)     field = drawFull96(paper)
+    else                                         field = drawDemoNexperia(paper)
+
     let getBounds = (f = field) => field.children[0].bounds
 
     // Draw ball, ballLine, attacker, keeper
@@ -30,15 +24,12 @@ function setupPaperJs(fieldType = "nexperia"){
         radius : 2,
         fillColor : "orange"
     })
-
     let ballLine = new paper.Path([getBounds().center, getBounds().leftCenter])
-
     let attacker = new paper.Shape.Circle({
         center : getBounds().center,
         radius : 9,
         fillColor : "black"
     })
-
     let keeper = new paper.Shape.Circle({
         center : [getBounds().leftCenter.x + 20, getBounds().center.y],
         radius : 9,
@@ -53,50 +44,60 @@ function setupPaperJs(fieldType = "nexperia"){
 
         keeper.position = e.point
 
-        if(keeper.position.x - 9 < getBounds().leftCenter.x)
-            keeper.position.x = getBounds().leftCenter.x + 9
-
-        if(getBounds().rightCenter.x < keeper.position.x + 9)
-            keeper.position.x = getBounds().rightCenter.x - 9
-
-        if(keeper.position.y - 9 < getBounds().topCenter.y)
-            keeper.position.y = getBounds().topCenter.y + 9
-
-        if(getBounds().bottomCenter.y < keeper.position.y + 9)
-            keeper.position.y = getBounds().bottomCenter.y - 9
+        if(keeper.position.x - 9 < getBounds().leftCenter.x)   keeper.position.x = getBounds().leftCenter.x + 9
+        if(getBounds().rightCenter.x < keeper.position.x + 9)  keeper.position.x = getBounds().rightCenter.x - 9
+        if(keeper.position.y - 9 < getBounds().topCenter.y)    keeper.position.y = getBounds().topCenter.y + 9
+        if(getBounds().bottomCenter.y < keeper.position.y + 9) keeper.position.y = getBounds().bottomCenter.y - 9
     }
 
+    let clickedOnce = false
     ballLine.onMouseDown = keeper.onMouseDown = field.onMouseDown = function(e){
+        if(clickedOnce){
+            storeClick({
+                r : attacker.rotation,
+                x : attacker.position.x - 70,
+                y : attacker.position.y - 70
+            },{
+                x : keeper.position.x - 70,
+                y : keeper.position.y - 70
+            },{
+                w : getBounds().width,
+                h : getBounds().height
+            })
+        }
+        clickedOnce = true
+
         let w = getBounds().width - 18
         let h = getBounds().height - 18
 
-        let xNew = Math.round(Math.random() * w) + getBounds().topLeft.x + 9
-        let yNew = Math.round(Math.random() * h) + getBounds().topLeft.y + 9
-
-        attacker.position = new paper.Point([xNew, yNew])
-
+        let attackerX = Math.round(Math.random() * w) + getBounds().topLeft.x + 9
+        let attackerY = Math.round(Math.random() * h) + getBounds().topLeft.y + 9
         let rotation = 3/4 * Math.PI + Math.random() * (Math.PI/2)
-        let _x = xNew + Math.cos(rotation) * 15
-        let _y = yNew + Math.sin(rotation) * 15
+
+        attacker.position = new paper.Point([attackerX, attackerY])
+        attacker.rotation = rotation    // Doesn't do anything for Paperjs, but its nice to store everything on attacker
+
+        let _x = attackerX + Math.cos(rotation) * 15
+        let _y = attackerY + Math.sin(rotation) * 15
 
         ball.position.x = _x
         ball.position.y = _y
 
-        _x = xNew + Math.cos(rotation) * 1000
-        _y = yNew + Math.sin(rotation) * 1000
+        _x = attackerX + Math.cos(rotation) * 1000
+        _y = attackerY + Math.sin(rotation) * 1000
 
         ballLine.removeSegments()
         ballLine.addSegments([
-            [xNew, yNew],
+            [attackerX, attackerY],
             [_x, _y]
         ])
         ballLine.strokeColor = "red"
-
-
     }
+
+    return paper
 }
 
-function drawDemoFieldNexperia(paper){
+function drawDemoNexperia(paper){
 
     // draw outer lines
     let field = new paper.Path.Rectangle({
@@ -124,7 +125,34 @@ function drawDemoFieldNexperia(paper){
     return fieldGroup
 }
 
-function drawFullField_9_6(paper){
+function drawDemo23(paper){
+
+    // draw outer lines
+    let field = new paper.Path.Rectangle({
+        point : [70, 70],
+        size : [300, 200],
+        fillColor: "#009a19"
+    })
+
+    // draw goal 1
+    let goal1 = new paper.Path.Rectangle({
+        point: [field.bounds.leftCenter.x , field.bounds.leftCenter.y - 50],
+        size : [-15, 100]
+    })
+
+    /* Draw center lines */
+    let fieldGroup = new paper.Group(
+        field, goal1
+    )
+
+    fieldGroup.style = {
+        strokeColor : "white"
+    }
+
+    return fieldGroup
+}
+
+function drawFull96(paper){
 
     // draw field
     let field = new paper.Path.Rectangle({
