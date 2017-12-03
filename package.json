@@ -6,6 +6,7 @@
   "author": "Emiel Steerneman & Wouter Van Veelen",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "fs-extra": "^4.0.2",
     "lodash": "^4.17.4",

@@ -54,7 +54,7 @@ function setupPaperJs(fieldType = "nexperia"){
     ballLine.onMouseDown = keeper.onMouseDown = field.onMouseDown = function(e){
         if(clickedOnce){
             storeClick({
-                r : attacker.rotation,
+                r : attacker.rot,
                 x : attacker.position.x - 70,
                 y : attacker.position.y - 70
             },{
@@ -75,16 +75,16 @@ function setupPaperJs(fieldType = "nexperia"){
         let rotation = 3/4 * Math.PI + Math.random() * (Math.PI/2)
 
         attacker.position = new paper.Point([attackerX, attackerY])
-        attacker.rotation = rotation    // Doesn't do anything for Paperjs, but its nice to store everything on attacker
+        attacker.rot = rotation    // Doesn't do anything for Paperjs, but its nice to store everything on attacker
 
         let _x = attackerX + Math.cos(rotation) * 15
-        let _y = attackerY + Math.sin(rotation) * 15
+        let _y = attackerY - Math.sin(rotation) * 15
 
         ball.position.x = _x
         ball.position.y = _y
 
         _x = attackerX + Math.cos(rotation) * 1000
-        _y = attackerY + Math.sin(rotation) * 1000
+        _y = attackerY - Math.sin(rotation) * 1000
 
         ballLine.removeSegments()
         ballLine.addSegments([
