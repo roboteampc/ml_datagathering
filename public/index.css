@@ -20,6 +20,10 @@
     height: 740px;
 }
 
+#userSelector {
+    background-color : red;
+}
+
 /*
     Draw a field
  */

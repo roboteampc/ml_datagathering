@@ -31,15 +31,10 @@ app.post('/store/:name/:field', (req, res, next) => {
     l("Incoming store! Name: " + req.params.name + ", Field: " + req.params.field)
     storeData(req.params.name, req.params.field, req.body)
     .then(() => {
-        l("Success!")
-        res.send({
-            "error" : false
-        })
+        res.send({"error" : false})
     }).catch((e) => {
-        l("Error!")
-        res.send({
-            "error" : true
-        })
+        l("Error! " + e.message)
+        res.send({"error" : true})
     })
 
 })
@@ -48,7 +43,6 @@ app.post('/store/:name/:field', (req, res, next) => {
 server.listen(3000)
 
 function storeData(name, field, data){
-    l("Storing data for " + name + " -> " + field)
 
     let dataString = _.map(data, v => v).join(',') + "\r\n"
     let filepath = path.join('./', 'data', name, field + ".csv")
