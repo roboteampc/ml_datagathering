@@ -1,25 +1,25 @@
-l = console.log
+l = console.log;
 
 window.onload = function() {
     setupPaperJs(FIELD_TYPES.FULL_96)
-}
+};
 
 function storeClick(attacker, keeper, field){
-    l(attacker)
-    l(keeper)
-    l(field)
+    l(attacker);
+    l(keeper);
+    l(field);
 
-    let ax = attacker.x / (field.w/2) - 1
-    let ay = attacker.y / (field.h/2) - 1
-    let ar = attacker.r
-    let kx = keeper.x / (field.w/2) - 1
-    let ky = keeper.y / (field.h/2) - 1
+    let ax = attacker.x / (field.w/2) - 1;
+    let ay = attacker.y / (field.h/2) - 1;
+    let ar = attacker.r;
+    let kx = keeper.x / (field.w/2) - 1;
+    let ky = keeper.y / (field.h/2) - 1;
 
-    let data = {ax, ay, ar, kx, ky}
+    let data = {ax, ay, ar, kx, ky};
 
-    l("==== " + app.username)
+    l("==== " + app.username);
     if(app.username == ""){
-        alert("Please enter your name on the left")
+        alert("Please enter your name on the left");
         return
     }
 
@@ -43,4 +43,4 @@ let app = new Vue({
             this.list = response.data
         })
     }
-})
+});
