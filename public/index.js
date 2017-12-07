@@ -1,8 +1,7 @@
 l = console.log
-FIELD_TYPE = FIELD_TYPES.FULL96
 
 window.onload = function() {
-    setupPaperJs(FIELD_TYPE)
+    setupPaperJs(FIELD_TYPES.FULL_96)
 }
 
 function storeClick(attacker, keeper, field){
@@ -18,8 +17,8 @@ function storeClick(attacker, keeper, field){
 
     let data = {ax, ay, ar, kx, ky}
 
-    l("==== " + app.user)
-    if(app.user == ""){
+    l("==== " + app.username)
+    if(app.username == ""){
         alert("Please enter your name on the left")
         return
     }
@@ -35,7 +34,6 @@ function storeClick(attacker, keeper, field){
 let app = new Vue({
     el: '#app',
     data: {
-        state : null,
         list : [],
         fields : FIELD_TYPES,
         user : "",
@@ -63,7 +61,6 @@ let app = new Vue({
     mounted : function () {
         this.$http.get('list').then(response => {
             this.list = response.data
-            this.state = this.states.selectUser
         })
     }
 })
