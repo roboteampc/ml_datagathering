@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-    <script src="https://unpkg.com/vue@2.5.5/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/vue@2.5.5/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.11.5/paper-full.js"></script>
@@ -14,54 +14,42 @@
 <body>
 <div id="app">
 
-    <div class="row">
-        <div class="col-md-12">
-            <h1> Machine Learning </h1>
+    <div id="header" class="row">
+        <div class="text_center col-md-12">
+            <h1> Machine Learning <span v-if="state == states.playGame"> - {{ nLines }}</span></h1>
         </div>
     </div>
 
     <div class="row">
-        <div id="sidebar-left" class="col-md-2 sidebar">
+        <div class="col-md-8 col-md-offset-2">
 
-            <h2><input v-model="user" placeholder="Enter your name"></h2>
-
-            <br>
-
-            <div v-for="item in list">
-                <h1> {{ item }} </h1>
+            <!-- Name selection -->
+            <div class="row" v-if="state == states.selectUser" id="userSelector">
+                    <h2 class="text_center"> Select a name </h2>
+                    <h2 class="text_center"><input v-on:keyup.enter="selectUser(user)" v-model="user" placeholder="New user"></h2>
+                    <div v-on:click="selectUser(user)" v-for="user in list" class="item pointer text_center col-md-offset-4 col-md-4">
+                        {{ user }}
+                    </div>
             </div>
-
-            <div v-if="state == states.selectUser" id="userSelector">
-                <div v-for="item in list">
-                    <h2 v-on:click="selectUser(item)"> {{ item }} </h2>
+            <!-- Field selection -->
+            <div class="row" v-if="state == states.selectField" id="fieldSelector">
+                <h2 class="text_center"> {{ user }}, select a field </h2>
+                <div v-on:click="selectField(field)" v-for="field in fields" class="item pointer text_center col-md-offset-4 col-md-4">
+                    {{ field }}
                 </div>
             </div>
-
-            <div v-if="state == states.selectField" id="fieldSelector">
-                <div v-for="field in fields">
-                    <h2 v-on:click="selectField(field)"> {{ field }} </h2>
-                </div>
+            <!-- Field -->
+            <div id="canvasContainer" v-if="state == states.playGame">
+                <canvas id="myCanvas" resize></canvas>
             </div>
 
-
-        </div>
-
-        <div id="canvasContainer" class="col-md-8">
-            <canvas id="myCanvas" resize>
-
-            </canvas>
-        </div>
-
-        <div id="sidebar-right" class="col-md-2 sidebar">
-            1 <br>
-            2 <br>
         </div>
     </div>
-
-    <script src="constants.js"></script>
-    <script src="myPaperjs.js"></script>
-    <script src="index.js"></script>
-
 </div>
+
+<script src="constants.js"></script>
+<script src="myPaperjs.js"></script>
+<script src="index.js"></script>
+
 </body>
 </html>

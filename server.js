@@ -6,6 +6,7 @@ let express = require('express')
 let _ 	    = require('lodash')
 let fs      = require('fs-extra')
 let path    = require('path')
+var exec    = require('child_process').exec
 
 let app    = express()
 let server = require('http').createServer(app)
@@ -24,6 +25,14 @@ app.use(bodyParser.json());
 app.get('/list', (req, res, next) => {
     fs.readdir('data', (err, files) => {
         res.send(JSON.stringify(files))
+    })
+})
+
+app.get('/get/:name/:field', (req, res, next) => {
+    let filepath = path.join('./', 'data', req.params.name, req.params.field + ".csv")
+    exec('wc ' + filepath, function(error, results){
+        let nLines = results.trim().split(' ')[0] || "0"
+        res.send(nLines)
     })
 })
 

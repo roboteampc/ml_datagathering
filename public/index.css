@@ -1,11 +1,12 @@
-.sidebar {
-    border: 1px solid black;
+
+#header {
+    background: #333;
+    color: white;
 }
 
 #canvasContainer {
     padding: 10px;
     background-color: #333;
-    border: 1px solid black;
 }
 
 #myCanvas {
@@ -20,8 +21,24 @@
     height: 740px;
 }
 
-#userSelector {
-    background-color : red;
+#selectUser {
+    text-align : center;
+}
+
+.item {
+    border: 1px solid #333;
+    margin-bottom: 5px;
+    font-size: 2em;
+}
+.item:hover {
+    background-color: #333;
+    color: white;
+}
+
+.text_center {text-align: center;}
+
+.pointer {
+    cursor : pointer;
 }
 
 /*

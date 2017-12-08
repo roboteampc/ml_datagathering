@@ -81,7 +81,13 @@ function setupPaperJs(fieldType = "nexperia"){
 
         let attackerX = Math.round(Math.random() * w) + getBounds().topLeft.x + 9;
         let attackerY = Math.round(Math.random() * h) + getBounds().topLeft.y + 9;
-        let rotation = 3/4 * Math.PI + Math.random() * (Math.PI/2);
+
+        let rotation
+        // Make sure that the robot at least aims towards the goals most of the time
+        if(Math.random() < 0.5)
+            rotation = 3/4 * Math.PI + Math.random() * (Math.PI/2);
+        else
+            rotation = Math.random() * Math.PI * 2;
 
         attacker.position = new paper.Point([attackerX, attackerY]);
         attacker.rot = rotation;    // Doesn't do anything for Paperjs, but its nice to store everything on attacker
