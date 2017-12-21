@@ -3,7 +3,7 @@ import keras as ks
 import numpy as np
 import os
 
-filepath = "./data/Nahuel/nexperia.csv"
+filepath = "./data/Emiel/nexperia.csv"
 
 N = 5000
 csv = np.genfromtxt(filepath, delimiter=",")[0:N]
@@ -35,9 +35,7 @@ csvOutput= csv[:,[DEFENDER_X, DEFENDER_Y]]
 # ACTUAL TRAINING with tanh
 model = ks.models.Sequential()
 model.add(ks.layers.Dense(10, activation=ks.activations.tanh, input_shape=(3,)))
-
-for i in range(0, 30):
-	model.add(ks.layers.Dense(30, activation=ks.activations.tanh))
+model.add(ks.layers.Dense(10, activation=ks.activations.tanh))
 model.add(ks.layers.Dense(10, activation=ks.activations.tanh))
 model.add(ks.layers.Dense(2, activation=ks.activations.linear))
 model.compile(optimizer=ks.optimizers.Adam(0.01), loss=ks.losses.mean_squared_error)
@@ -116,15 +114,13 @@ while not done:
 
     frame += 1
 
-
-
-    fx = np.cos(frame / 71)*0.8+0.1
-    fy = np.sin(frame / 41)*0.8+0.1
+    fx = np.cos(frame / 31)*0.8+0.1
+    fy = np.sin(frame / 23)*0.8+0.1
     ax = tX(fx)
     ay = tY(fy)
     ar = np.sin(frame/81) * np.pi/2 + np.pi
 
-    input = np.array([[fx, fy, 0]])
+    input = np.array([[fx, fy, ar/np.pi-1]])
     output = model.predict(input)
 
     dx = output[0][0]
